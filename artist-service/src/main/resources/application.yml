@@ -1,0 +1,30 @@
+server:
+  port: 0    # 0 to be assigned a random port(you can have in same machine several services running)
+             # other value for default port where the service will be started
+
+eureka:         #tells about the Eureka server details and its refresh time
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${server.port}}
+    metadataMap:
+      instanceId: ${spring.application.name}:${server.port} # To have multiple instances
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+    healthcheck:
+      enabled: true
+    lease:
+      duration: 5
+
+spring:
+  application:
+    name: artist-service   #current service name to be used by the eureka server
+
+management:
+  security:
+    enabled: false  #disable the spring security on the management endpoints like /env, /refresh etc.
+
+logging:
+  level:
+    org.ansimar.artistservice: DEBUG
